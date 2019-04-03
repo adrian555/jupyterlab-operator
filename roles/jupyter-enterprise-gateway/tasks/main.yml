@@ -14,18 +14,10 @@
 
 - name: download kubectl
   include: kubectl.yml
-  
+
 #
 # Deploys Jupyter Enterprise Gateway and download kernel images
 #
-
-- name: Remove enterprise-gateway namespace
-  environment:
-    PATH: "{{ path.stdout }}:/opt/ansible"
-  shell: |
-    kubectl delete --force namespace enterprise-gateway
-  ignore_errors: yes
-
 # - name: download enterprise gateway and kernel images
 #   shell: |
 #     docker pull elyra/enterprise-gateway:{{ jupyter_enterprise_gateway.image_tag }}

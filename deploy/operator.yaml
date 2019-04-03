@@ -45,7 +45,7 @@ spec:
             - name: OPERATOR_NAME
               value: "jupyterlab-operator"
             - name: ANSIBLE_INVENTORY
-              value: /opt/ansible/inventory
+              value: "/opt/ansible/inventory"
       volumes:
         - name: runner
           emptyDir: {}

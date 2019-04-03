@@ -15,6 +15,11 @@ host_key_checking: False
 install_temp_dir: /tmp/ansible-install
 install_dir: /opt
 
+# Kubectl version
+kubectl_version: "{{ lookup('env','KUBECTL_VERSION') | default('v1.13.4', true) }}"
+
+# Helm version
+helm_version: "{{ lookup('env','HELM_VERSION') | default('v2.12.2', true) }}"
 
 # Components version
 kube_version: 1.11.0-0

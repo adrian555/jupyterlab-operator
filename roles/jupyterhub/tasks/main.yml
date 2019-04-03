@@ -14,20 +14,26 @@
 
 - name: download kubectl
   include: kubectl.yml
-  
+
+- name: download helm
+  include: helm.yml
+
+- name: init helm
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
+  shell: |
+    helm init --client-only
+
 #
 # Based on documentation from https://zero-to-jupyterhub.readthedocs.io/en/latest/
 #
 - name: Add JupyterHub Helm chart repository
+  ignore_errors: yes
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
   shell: |
     helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-    helm repo update
-
-# Add the below step if you want to clean up the jupyter namespace 
-# - name: Remove previous installation of JupyterHub
-#   shell: |
-#     kubectl delete namespace {{ jupyterhub.namespace }}
-#   ignore_errors: yes
+    helm repo update > /dev/null
 
 - name: Create JupyterHub helm chart configuration
   template:
@@ -36,6 +42,8 @@
     mode: 0644
 
 - name: Install JupyterHub
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
   shell: |
     helm upgrade --install --force hub jupyterhub/jupyterhub --namespace {{ jupyterhub.namespace }} --version {{ jupyterhub.helm_version }} --values {{ install_temp_dir }}/jupyterhub-config.yaml
 

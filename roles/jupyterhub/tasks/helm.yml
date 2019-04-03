@@ -1,0 +1,13 @@
+- name: download helm
+  shell: |
+    curl -L -o /opt/ansible/helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-{{ helm_version }}-linux-amd64.tar.gz
+
+- name: extract helm
+  ignore_errors: yes
+  shell: tar zxvf helm.tgz
+
+- name: copy helm
+  copy:
+    src: linux-amd64/helm
+    dest: /opt/ansible/helm
+    mode: 0744
