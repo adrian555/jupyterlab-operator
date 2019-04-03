@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyterlab-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: jupyterlab-operator
+  template:
+    metadata:
+      labels:
+        name: jupyterlab-operator
+    spec:
+      serviceAccountName: jupyterlab-operator
+      containers:
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          # Replace this with the built image name
+          image: "ffdlops/jupyterlab:v0.0.1"
+          imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: operator
+          # Replace this with the built image name
+          image: "ffdlops/jupyterlab:v0.0.1"
+          imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "jupyterlab-operator"
+            - name: ANSIBLE_INVENTORY
+              value: /opt/ansible/inventory
+      volumes:
+        - name: runner
+          emptyDir: {}

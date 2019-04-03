@@ -1,0 +1,10 @@
+[all:vars]
+
+[ingress]
+openshift-pipelines.us-south.containers.appdomain.cloud
+
+[kernel_namespace]
+default
+
+[kernel_sa_name]
+default
