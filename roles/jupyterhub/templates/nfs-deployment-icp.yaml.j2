@@ -158,6 +158,8 @@ apiVersion: storage.k8s.io/v1
 metadata:
   name: nfs-dynamic
   namespace: {{ jupyterhub.namespace }}
+{#
   annotations:
     storageclass.kubernetes.io/is-default-class: "false"
+#}
 provisioner: example.com/nfs

@@ -1,13 +1,16 @@
-- name: download helm
-  shell: |
-    curl -L -o /opt/ansible/helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-{{ helm_version }}-linux-amd64.tar.gz
+- name: Check whether helm exists
+  stat:
+    path: /opt/ansible/helm
+  register: helm_stats
 
-- name: extract helm
-  ignore_errors: yes
-  shell: tar zxvf helm.tgz
-
-- name: copy helm
-  copy:
-    src: linux-amd64/helm
-    dest: /opt/ansible/helm
-    mode: 0744
+- name: Download helm
+  block:
+    - shell: |
+        curl -L -o /opt/ansible/helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-{{ helm_version }}-linux-amd64.tar.gz && tar zxvf helm.tgz
+    - copy:
+        src: linux-amd64/helm
+        dest: /opt/ansible/helm
+        mode: 0744
+    - shell: |
+        /opt/ansible/helm init --client-only
+  when: helm_stats.stat.exists == False

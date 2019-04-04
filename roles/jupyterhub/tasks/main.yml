@@ -18,12 +18,6 @@
 - name: download helm
   include: helm.yml
 
-- name: init helm
-  environment:
-    PATH: "{{ path.stdout }}:/opt/ansible"
-  shell: |
-    helm init --client-only
-
 #
 # Based on documentation from https://zero-to-jupyterhub.readthedocs.io/en/latest/
 #
@@ -53,8 +47,10 @@
     dest: "{{ install_temp_dir }}/nfs-deployment-icp.yaml"
     mode: 0644
 
+# TBD: use create instead of apply for now
 - name: Create NFS provisioner
+  ignore_errors: yes
   environment:
     PATH: "{{ path.stdout }}:/opt/ansible"
   shell: |
-    kubectl apply -f {{ install_temp_dir }}/nfs-deployment-icp.yaml
+    kubectl create -f {{ install_temp_dir }}/nfs-deployment-icp.yaml
