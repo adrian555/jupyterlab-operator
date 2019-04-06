@@ -1,7 +1,0 @@
-apiVersion: jupterlab.ibm.com/v1alpha1
-kind: Jupyterlab
-metadata:
-  name: example-jupyterlab
-spec:
-  # Add fields here
-  size: 3

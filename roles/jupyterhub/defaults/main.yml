@@ -1,5 +1,5 @@
 jupyterhub:
-  namespace: kubeflow
+  namespace: "{{ lookup('env','JUPYTERHUB_NAMESPACE') | default('jupyterhub', true) }}"
   helm_version: 0.7.0 # helm  version coming from: https://jupyterhub.github.io/helm-chart/
   home_dir: /opt/hub
   shared_dir: /opt/hub/shared

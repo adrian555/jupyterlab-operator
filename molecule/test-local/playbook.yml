@@ -3,7 +3,7 @@
 - name: Build Operator in Kubernetes docker container
   hosts: k8s
   vars:
-    image_name: jupterlab.ibm.com/jupyterlab-operator:testing
+    image_name: openaihub.ibm.com/jupyterlab-operator:testing
   tasks:
   # using command so we don't need to install any dependencies
   - name: Get existing image hash
@@ -23,8 +23,8 @@
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
     deploy_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/deploy"
     pull_policy: Never
-    REPLACE_IMAGE: jupterlab.ibm.com/jupyterlab-operator:testing
-    custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/jupterlab_v1alpha1_jupyterlab_cr.yaml'])) | from_yaml }}"
+    REPLACE_IMAGE: openaihub.ibm.com/jupyterlab-operator:testing
+    custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/openaihub_v1alpha1_jupyterlab_cr.yaml'])) | from_yaml }}"
   tasks:
   - block:
     - name: Delete the Operator Deployment
@@ -54,7 +54,7 @@
         namespace: '{{ namespace }}'
         definition: "{{ lookup('template', '/'.join([deploy_dir, 'operator.yaml'])) }}"
 
-    - name: Create the jupterlab.ibm.com/v1alpha1.Jupyterlab
+    - name: Create the openaihub.ibm.com/v1alpha1.Jupyterlab
       k8s:
         state: present
         namespace: '{{ namespace }}'

@@ -1,5 +1,5 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   creationTimestamp: null
   name: jupyterlab-operator
@@ -10,6 +10,7 @@ rules:
   - pods
   - services
   - endpoints
+  - persistentvolumes
   - persistentvolumeclaims
   - events
   - configmaps
@@ -20,8 +21,25 @@ rules:
   - ""
   resources:
   - namespaces
+  - serviceaccounts
+  - pods/portforward
   verbs:
   - get
+  - list
+  - create
+  - delete
+- apiGroups:
+  - "rbac.authorization.k8s.io"
+  resources:
+  - clusterroles
+  - clusterrolebindings
+  - roles
+  - rolebindings
+  verbs:
+  - get
+  - list
+  - create
+  - delete
 - apiGroups:
   - apps
   resources:
@@ -47,8 +65,22 @@ rules:
   verbs:
   - update
 - apiGroups:
-  - jupterlab.ibm.com
+  - openaihub.ibm.com
   resources:
   - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  - podsecuritypolicies
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  - volumeattachments
   verbs:
   - '*'

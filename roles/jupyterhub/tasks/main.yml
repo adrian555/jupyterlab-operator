@@ -39,7 +39,7 @@
   environment:
     PATH: "{{ path.stdout }}:/opt/ansible"
   shell: |
-    helm upgrade --install --force hub jupyterhub/jupyterhub --namespace {{ jupyterhub.namespace }} --version {{ jupyterhub.helm_version }} --values {{ install_temp_dir }}/jupyterhub-config.yaml
+    helm upgrade --install --force hub-{{ jupyterhub.namespace }} jupyterhub/jupyterhub --namespace {{ jupyterhub.namespace }} --version {{ jupyterhub.helm_version }} --values {{ install_temp_dir }}/jupyterhub-config.yaml
 
 - name: Create JupyterHub NFS service descriptor
   template:
