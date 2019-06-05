@@ -49,7 +49,7 @@ singleuser:
       storageClass: nfs-dynamic
     capacity: 2Gi
   extraEnv:
-    KG_URL: http://{{ groups['ingress'][0] }}
+    KG_URL: http://enterprise-gateway.enterprise-gateway:8888
     KG_REQUEST_TIMEOUT: 60
 
 rbac:
