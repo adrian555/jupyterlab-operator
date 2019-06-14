@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    getambassador.io/config: |-
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name: jupyter-lb-hub-mapping
+      prefix: /hub/
+      rewrite: /hub/
+      timeout_ms: 300000
+      service: proxy-public.{{ jupyterhub.namespace }}
+      use_websocket: true
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name: jupyter-lb-user-mapping
+      prefix: /user/
+      rewrite: /user/
+      timeout_ms: 300000
+      service: proxy-public.{{ jupyterhub.namespace }}
+      use_websocket: true
+  labels:
+    app: jupyterhub
+    chart: jupyterhub-0.7.0
+    component: proxy-public
+    heritage: Tiller
+    release: hub
+  name: proxy-public
+  namespace: {{ jupyterhub.namespace }}
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    component: proxy
+    release: hub
+  sessionAffinity: None
+  type: NodePort

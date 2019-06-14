@@ -41,6 +41,19 @@
   shell: |
     helm upgrade --install --force hub-{{ jupyterhub.namespace }} jupyterhub/jupyterhub --namespace {{ jupyterhub.namespace }} --version {{ jupyterhub.helm_version }} --values {{ install_temp_dir }}/jupyterhub-config.yaml
 
+- name: Create JupyterHub ambassador setting descriptor
+  template:
+    src: proxy-public.yaml.j2
+    dest: "{{ install_temp_dir }}/proxy-public.yaml"
+    mode: 0644
+    
+- name: Create JupyterHub ambassador setting
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
+  shell: |
+    kubectl apply -f {{ install_temp_dir }}/proxy-public.yaml
+
+
 - name: Create JupyterHub NFS service descriptor
   template:
     src: nfs-deployment-icp.yaml.j2
