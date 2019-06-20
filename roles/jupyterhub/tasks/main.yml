@@ -66,4 +66,4 @@
   environment:
     PATH: "{{ path.stdout }}:/opt/ansible"
   shell: |
-    kubectl create -f {{ install_temp_dir }}/nfs-deployment-icp.yaml
+    kubectl apply -f {{ install_temp_dir }}/nfs-deployment-icp.yaml
