@@ -37,6 +37,6 @@ spec:
     targetPort: 8000
   selector:
     component: proxy
-    release: hub
+    release: hub-{{ jupyterhub.namespace }}
   sessionAffinity: None
-  type: NodePort
+  type: LoadBalancer
