@@ -28,6 +28,7 @@ rules:
   - list
   - create
   - delete
+  - watch
 - apiGroups:
   - "rbac.authorization.k8s.io"
   resources:
