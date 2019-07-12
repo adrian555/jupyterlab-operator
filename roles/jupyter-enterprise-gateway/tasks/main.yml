@@ -26,8 +26,8 @@
         dest: "{{ install_temp_dir }}/enterprise-gateway.yaml"
     - replace:
         path: "{{ install_temp_dir }}/enterprise-gateway.yaml"
-        regexp: ':VERSION'
-        replace: ':{{ jupyter_enterprise_gateway.image_tag }}'
+        regexp: 'image: elyra/enterprise-gateway:dev'
+        replace: 'image: lresende/enterprise-gateway:dev'
     - shell: |
         kubectl apply -f "{{ install_temp_dir }}/enterprise-gateway.yaml"
 
